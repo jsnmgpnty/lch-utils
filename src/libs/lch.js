@@ -50,7 +50,7 @@ function getRgbPercentageFromLch(l, c, h, a = 100, forceInGamut = true) {
   let isWithinSRGB = undefined;
   if (forceInGamut) [l, c, h, isWithinSRGB] = forceIntoGamut(l, c, h, isLchWithinRgb);
   var res = LCH_to_sRGB([+l, +c, +h]);
-  return { value: res.map((c) => Math.round(c * 100) / 100), isWithinSRGB };
+  return { value: res.map((c) => Math.round(c * 10000) / 100), isWithinSRGB };
 }
 
 function lchToHex(l, c, h, a = 100, forceInGamut = true) {
