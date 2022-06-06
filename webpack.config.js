@@ -1,11 +1,13 @@
 const path = require('path');
 
-export default {
+module.exports = {
+  entry: './src/index.js',
   output: {
-    path: path.resolve('dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
     library: {
       name: 'lchColorUtils',
+      type: 'umd',
     },
   },
 };

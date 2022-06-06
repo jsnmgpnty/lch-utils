@@ -1,8 +1,8 @@
 {
   "name": "lch-color-utils",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "description": "",
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "webpack --mode production"
   },
