@@ -38,7 +38,7 @@ function forceIntoGamut(l, c, h, isLchWithin) {
   return [l, c, h];
 }
 
-function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
+export function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
   if (forceInGamut) {
     [l, c, h] = forceIntoGamut(l, c, h, isLchWithinRgb);
   }
@@ -49,7 +49,3 @@ function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
   var values = res.map((c) => Math.round(c * 10000) / 100);
   return { values, string: str };
 }
-
-module.exports = {
-  lchToRgb: lchToRgb,
-};

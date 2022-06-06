@@ -6,7 +6,7 @@
  * @author Lea Verou 2020 MIT License
  */
 // A is m x n. B is n x p. product is m x p.
-function multiplyMatrices(A, B) {
+export default function multiplyMatrices(A, B) {
 	let m = A.length;
 
 	if (!Array.isArray(A[0])) {
@@ -39,7 +39,3 @@ function multiplyMatrices(A, B) {
 
 	return product;
 }
-
-module.exports = {
-	multiplyMatrices,
-};

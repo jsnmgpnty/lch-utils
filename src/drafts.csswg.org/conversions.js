@@ -500,7 +500,7 @@ function hsl_premultiply(color, alpha) {
   return polar_premultiply(color, alpha, 0);
 }
 
-module.exports = {
+export {
   lin_sRGB,
   gam_sRGB,
   lin_sRGB_to_XYZ,

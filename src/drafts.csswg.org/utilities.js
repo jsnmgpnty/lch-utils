@@ -16,6 +16,6 @@ function LCH_to_sRGB(LCH) {
   return gam_sRGB(XYZ_to_lin_sRGB(D50_to_D65(Lab_to_XYZ(LCH_to_Lab(LCH)))));
 }
 
-module.exports = {
+export {
   LCH_to_sRGB,
 };
