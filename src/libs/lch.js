@@ -16,7 +16,7 @@ function forceIntoGamut(l, c, h, isLchWithin) {
   // and adjusting the c via binary-search
   // until the color is on the sRGB boundary.
   if (isLchWithin(l, c, h)) {
-    return [l, c, h];
+    return [l, c, h, true];
   }
 
   let hiC = c;
@@ -35,7 +35,7 @@ function forceIntoGamut(l, c, h, isLchWithin) {
     c = (hiC + loC) / 2;
   }
 
-  return [l, c, h];
+  return [l, c, h, false];
 }
 
 function percentToHex(percentage) {
@@ -47,16 +47,17 @@ function percentToHex(percentage) {
 }
 
 function getRgbPercentageFromLch(l, c, h, a = 100, forceInGamut = true) {
-  if (forceInGamut) [l, c, h] = forceIntoGamut(l, c, h, isLchWithinRgb);
-  return LCH_to_sRGB([+l, +c, +h]);
+  let isWithinSRGB = undefined;
+  if (forceInGamut) [l, c, h, isWithinSRGB] = forceIntoGamut(l, c, h, isLchWithinRgb);
+  var res = LCH_to_sRGB([+l, +c, +h]);
+  return { value: res.map((c) => Math.round(c * 100) / 100), isWithinSRGB };
 }
 
 function lchToHex(l, c, h, a = 100, forceInGamut = true) {
   var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut);
-  var value = res.map((c) => Math.round(c * 10000) / 100);
-  const r = percentToHex(value[0]);
-  const g = percentToHex(value[1]);
-  const b = percentToHex(value[2]);
+  const r = percentToHex(res.value[0]);
+  const g = percentToHex(res.value[1]);
+  const b = percentToHex(res.value[2]);
   return {
     value: `#${r}${g}${b}`,
     alpha: a,
@@ -65,11 +66,8 @@ function lchToHex(l, c, h, a = 100, forceInGamut = true) {
 
 function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
   var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut);
-  var str = "rgb(" + res.map(x => {
-    return Math.round(x * 10000) / 100 + "%";
-  }).join(" ") + alphaToString(a) + ")";
-  var value = res.map((c) => Math.round(c * 10000) / 100);
-  return { value, string: str };
+  var str = "rgb(" + res.value.map(x => `${x}%`).join(" ") + alphaToString(a) + ")";
+  return { value: res.value, string: str };
 }
 
 module.exports = {
