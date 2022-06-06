@@ -1,1 +1,5 @@
-export * from './libs/lchToRgb';
+const lchToRgb = require('./libs/lchToRgb');
+
+module.exports = {
+  lchToRgb,
+};

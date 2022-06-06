@@ -1,6 +1,6 @@
 // https://drafts.csswg.org/css-color-4/conversions.js
 
-import multiplyMatrices from './multiply-matrices';
+const multiplyMatrices = require('./multiply-matrices');
 
 // Sample code for color conversions
 // Conversion can also be done using ICC profiles and a Color Management System
@@ -500,7 +500,7 @@ function hsl_premultiply(color, alpha) {
   return polar_premultiply(color, alpha, 0);
 }
 
-export {
+module.exports = {
   lin_sRGB,
   gam_sRGB,
   lin_sRGB_to_XYZ,

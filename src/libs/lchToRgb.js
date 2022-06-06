@@ -38,7 +38,7 @@ function forceIntoGamut(l, c, h, isLchWithin) {
   return [l, c, h];
 }
 
-export default function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
+module.exports = function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
   if (forceInGamut) {
     [l, c, h] = forceIntoGamut(l, c, h, isLchWithinRgb);
   }

@@ -6,7 +6,7 @@
  * @author Lea Verou 2020 MIT License
  */
 // A is m x n. B is n x p. product is m x p.
-export default function multiplyMatrices(A, B) {
+module.exports = function multiplyMatrices(A, B) {
 	let m = A.length;
 
 	if (!Array.isArray(A[0])) {
