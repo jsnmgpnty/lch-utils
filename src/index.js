@@ -47,5 +47,5 @@ function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
 }
 
 module.exports = {
-  lchToRgb,
+  lchToRgb: lchToRgb,
 };
