@@ -1,5 +1,9 @@
 const { LCH_to_sRGB } = require('./drafts.csswg.org/utilities');
 
+function alphaToString(a = 100) {
+	return (a < 100? ` / ${a}%` : "");
+}
+
 function isLchWithinRgb(l, c, h) {
   var rgb = LCH_to_sRGB([+l, +c, +h]);
   const ε = .000005;
@@ -41,7 +45,7 @@ function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
   var res = LCH_to_sRGB([+l, +c, +h]);
   var str = "rgb(" + res.map(x => {
     return Math.round(x * 10000) / 100 + "%";
-  }).join(" ") + alpha_to_string(a) + ")";
+  }).join(" ") + alphaToString(a) + ")";
   var values = res.map((c) => Math.round(c * 10000) / 100);
   return { values, string: str };
 }
