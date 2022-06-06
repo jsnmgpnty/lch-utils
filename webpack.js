@@ -6,6 +6,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
     library: 'lchColorUtils',
-    libraryTarget: 'umd',
+    libraryTarget: 'module',
+    module: true,
   },
 };
