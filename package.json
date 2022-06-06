@@ -1,6 +1,6 @@
 {
   "name": "lch-color-utils",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "dist/main.js",
   "scripts": {
