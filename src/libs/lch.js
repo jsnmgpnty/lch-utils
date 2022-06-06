@@ -46,15 +46,28 @@ function percentToHex(percentage) {
   return hexValue;
 }
 
-function getRgbPercentageFromLch(l, c, h, a = 100, forceInGamut = true) {
+function sRGB_to_hex (rgb) {
+  check_sRGB_bounds(...rgb)
+  let values = rgb[3] !== 1 ? rgb : rgb.slice(0, 3)
+
+  return '#' + values.map(x => Math.round(x * 255).toString(16).toUpperCase().padStart(2, '0')).join('')
+}
+
+function calculatePercent(value, isPrecise = true) {
+  var result = Math.round(value * 10000) / 100;;
+  if (isPrecise) return result;
+  return Math.round(result);
+}
+
+function getRgbPercentageFromLch(l, c, h, a = 100, forceInGamut = true, isPrecise = true) {
   let isWithinSRGB = undefined;
   if (forceInGamut) [l, c, h, isWithinSRGB] = forceIntoGamut(l, c, h, isLchWithinRgb);
   var res = LCH_to_sRGB([+l, +c, +h]);
-  return { value: res.map((c) => Math.round(c * 10000) / 100), isWithinSRGB };
+  return { value: res.map((c) => calculatePercent(c, isPrecise)), isWithinSRGB };
 }
 
-function lchToHex(l, c, h, a = 100, forceInGamut = true) {
-  var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut);
+function lchToHex(l, c, h, a = 100, forceInGamut = true, isPrecise = true) {
+  var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut, isPrecise);
   const r = percentToHex(res.value[0]);
   const g = percentToHex(res.value[1]);
   const b = percentToHex(res.value[2]);
@@ -64,8 +77,8 @@ function lchToHex(l, c, h, a = 100, forceInGamut = true) {
   };
 }
 
-function lchToRgb(l, c, h, a = 100, forceInGamut = true) {
-  var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut);
+function lchToRgb(l, c, h, a = 100, forceInGamut = true, isPrecise = true) {
+  var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut, isPrecise);
   var str = "rgb(" + res.value.map(x => `${x}%`).join(" ") + alphaToString(a) + ")";
   return { value: res.value, string: str };
 }
