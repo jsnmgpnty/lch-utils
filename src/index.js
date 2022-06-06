@@ -1,5 +1,6 @@
-const lchToRgb = require('./libs/lchToRgb');
+const lch = require('./libs/lch');
 
 module.exports = {
-  lchToRgb,
+  lchToRgb: lch.lchToRgb,
+  lchToHex: lch.lchToHex,
 };
