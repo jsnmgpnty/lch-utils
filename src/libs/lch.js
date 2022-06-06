@@ -40,26 +40,23 @@ function forceIntoGamut(l, c, h, isLchWithin) {
 
 function percentToHex(percentage) {
   var decimalValue = Math.round(percentage * 255 / 100);
-  if (percentage < 7) {
-    var hexValue = "0" + decimalValue.toString(16).toUpperCase();
-  }
-  else {
-    var hexValue = decimalValue.toString(16).toUpperCase();
-  }
+  var hexValue = percentage < 7
+    ? "0" + decimalValue.toString(16).toUpperCase()
+    : decimalValue.toString(16).toUpperCase();
   return hexValue;
 }
 
 function getRgbPercentageFromLch(l, c, h, a = 100, forceInGamut = true) {
   if (forceInGamut) [l, c, h] = forceIntoGamut(l, c, h, isLchWithinRgb);
-  var res = LCH_to_sRGB([+l, +c, +h]);
-  return res;
+  return LCH_to_sRGB([+l, +c, +h]);
 }
 
 function lchToHex(l, c, h, a = 100, forceInGamut = true) {
   var res = getRgbPercentageFromLch(l, c, h, a, forceInGamut);
-  const r = percentToHex(res[0]);
-  const g = percentToHex(res[1]);
-  const b = percentToHex(res[2]);
+  var value = res.map((c) => Math.round(c * 10000) / 100);
+  const r = percentToHex(value[0]);
+  const g = percentToHex(value[1]);
+  const b = percentToHex(value[2]);
   return {
     value: `#${r}${g}${b}`,
     alpha: a,
