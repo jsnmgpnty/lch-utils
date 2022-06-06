@@ -40,4 +40,6 @@ function multiplyMatrices(A, B) {
 	return product;
 }
 
-module.exports = multiplyMatrices;
+module.exports = {
+	multiplyMatrices,
+};
