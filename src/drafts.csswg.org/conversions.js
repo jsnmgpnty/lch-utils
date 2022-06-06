@@ -1,6 +1,6 @@
 // https://drafts.csswg.org/css-color-4/conversions.js
 
-const { multiplyMatrices } = require('./multiply-matrices');
+import multiplyMatrices from './multiply-matrices';
 
 // Sample code for color conversions
 // Conversion can also be done using ICC profiles and a Color Management System

@@ -1,6 +1,6 @@
 // https://drafts.csswg.org/css-color-4/utilties.js
 
-const { gam_sRGB, XYZ_to_lin_sRGB, D50_to_D65, Lab_to_XYZ, LCH_to_Lab } = require("./conversions");
+import { gam_sRGB, XYZ_to_lin_sRGB, D50_to_D65, Lab_to_XYZ, LCH_to_Lab } from './conversions';
 
 function LCH_to_sRGB(LCH) {
   // convert an array of CIE LCH values
