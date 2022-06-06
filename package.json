@@ -1,10 +1,10 @@
 {
   "name": "lch-color-utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/jsnmgpnty/lch-utils/issues"
   },
-  "homepage": "https://github.com/jsnmgpnty/lch-utils#readme"
+  "homepage": "https://github.com/jsnmgpnty/lch-utils#readme",
+  "devDependencies": {
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.9.2"
+  }
 }

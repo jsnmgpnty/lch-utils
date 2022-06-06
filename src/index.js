@@ -1,3 +1,5 @@
+const { LCH_to_sRGB } = require('./drafts.csswg.org/utilities');
+
 function isLchWithinRgb(l, c, h) {
   var rgb = LCH_to_sRGB([+l, +c, +h]);
   const ε = .000005;
