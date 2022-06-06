@@ -9,5 +9,6 @@ module.exports = {
       name: 'lchColorUtils',
       type: 'umd',
     },
+    globalObject: 'this',
   },
 };
