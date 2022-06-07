@@ -74,7 +74,7 @@ function getRgbPercentageFromLch(args: LchConvertRequest): LchConversionResult {
     const r = forceIntoGamut(request.l, request.c, request.h, isLchWithinRgb);
     lchColor = { ...lchColor, ...r };
   }
-  const res = LCH_to_sRGB([request.l, request.c, request.h]) as Array<number>;
+  const res = LCH_to_sRGB([lchColor.l, lchColor.c, lchColor.h]) as Array<number>;
   return { value: res.map((c) => calculatePercent(c, request.isPrecise)), isWithinSRGB: lchColor.isWithinLch };
 }
 
