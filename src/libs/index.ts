@@ -1,12 +1,14 @@
 import {
+  LchColor,
   LchColorSRGB,
   LchConversionResult,
   LchConvertRequest,
   LchConvertToHexResult,
   LchConvertToSRGBResult,
+  SRGBColor,
   WithinLchFunctionType,
 } from '../types';
-import { LCH_to_sRGB } from '../drafts.csswg.org/utilities';
+import { LCH_to_sRGB, sRGB_to_LCH } from '../drafts.csswg.org/utilities';
 
 const DEFAULT_ARGS: LchConvertRequest = {
   l: 0,
@@ -76,6 +78,48 @@ function getRgbPercentageFromLch(args: LchConvertRequest): LchConversionResult {
   }
   const res = LCH_to_sRGB([lchColor.l, lchColor.c, lchColor.h]) as Array<number>;
   return { value: res.map((c) => calculatePercent(c, request.isPrecise)), isWithinSRGB: lchColor.isWithinLch };
+}
+
+function checkSRGBBounds(r: number, g: number, b: number, a: number) {
+  if (r < 0 || r > 1) throw 'Incorrect sRGB value! (r is out of [0,1] interval): ' + r;
+  if (g < 0 || g > 1) throw 'Incorrect sRGB value! (g is out of [0,1] interval): ' + g;
+  if (b < 0 || b > 1) throw 'Incorrect sRGB value! (b is out of [0,1] interval): ' + b;
+  if (a < 0 || a > 1) throw 'Incorrect sRGB value! (a is out of [0,1] interval): ' + a;
+}
+
+function hexToSRGB(hex: string): SRGBColor {
+  hex = hex.replace('#', '').toUpperCase();
+  if (!hex || typeof hex !== 'string' || !hex.length) throw 'Incorrect Hex string format! (0)';
+  if (!/^[A-F\d]+$/.test(hex)) throw 'Incorrect Hex string format! (1)';
+
+  if (hex.length < 3) hex = hex.padStart(6, hex);
+  else if (hex.length < 6) hex = hex.slice(0, 3);
+  else if (hex.length === 7) hex = hex.slice(0, 6);
+  else if (hex.length > 8) hex = hex.slice(0, 8);
+
+  if (hex.length === 3) hex += hex;
+
+  const channels = hex.match(/.{2}/g);
+  if (!channels || channels.length < 3) throw 'Incorrect Hex string format! (2)';
+
+  const values = channels.map((x) => parseInt(x, 16) / 255);
+  if (values.some(Number.isNaN)) throw 'Incorrect Hex string format! (3)';
+
+  const [r, g, b, a] = values;
+  checkSRGBBounds(r, g, b, a ?? 1);
+  return { r, g, b, a: a ?? 1 };
+}
+
+function srgbToLch(r: number, g: number, b: number, a = 1): LchColor {
+  checkSRGBBounds(r, g, b, a);
+  const lch = sRGB_to_LCH([r, g, b]) as Array<number>;
+  const roundedLch = lch.map((v) => Math.round(v));
+  return { l: roundedLch[0], c: roundedLch[1], h: roundedLch[2], a };
+}
+
+export function hexToLch(hex: string): LchColor {
+  const srgb = hexToSRGB(hex);
+  return srgbToLch(srgb.r, srgb.g, srgb.b, srgb.a);
 }
 
 export function lchToHex(args: LchConvertRequest): LchConvertToHexResult {

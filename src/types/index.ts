@@ -2,10 +2,18 @@ export type LchColor = {
   l: number;
   c: number;
   h: number;
+  a?: number;
 };
 
 export type LchColorSRGB = LchColor & {
   isWithinLch?: boolean;
+};
+
+export type SRGBColor = {
+  r: number;
+  g: number;
+  b: number;
+  a?: number;
 };
 
 export type WithinLchFunctionType = (l: number, c: number, h: number) => boolean;

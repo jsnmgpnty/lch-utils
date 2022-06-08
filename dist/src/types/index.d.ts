@@ -2,9 +2,16 @@ export declare type LchColor = {
     l: number;
     c: number;
     h: number;
+    a?: number;
 };
 export declare type LchColorSRGB = LchColor & {
     isWithinLch?: boolean;
+};
+export declare type SRGBColor = {
+    r: number;
+    g: number;
+    b: number;
+    a?: number;
 };
 export declare type WithinLchFunctionType = (l: number, c: number, h: number) => boolean;
 export declare type LchConversionResult = {

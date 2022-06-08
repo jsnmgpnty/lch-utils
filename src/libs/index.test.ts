@@ -1,4 +1,4 @@
-import { lchToHex } from './index';
+import { lchToHex, hexToLch } from './index';
 
 const COLOR_SCALES = [
   { label: '50', value: 98 },
@@ -14,13 +14,11 @@ const COLOR_SCALES = [
   { label: '950', value: 9 },
 ];
 
-const PALETTE = [
+const BASE_COLORS = [
   {
-    title: 'primary light',
-    l: 96,
-    c: 20,
-    h: 198,
-    expectedBase: '#C4FFFF',
+    label: 'primary light',
+    value: '#C6FFFF',
+    expectedValue: { l: 96, c: 20, h: 198, a: 1 },
     expectedValues: [
       '#E3FFFF',
       '#C2FCFC',
@@ -36,11 +34,9 @@ const PALETTE = [
     ],
   },
   {
-    title: 'primary dark',
-    l: 13,
-    c: 47,
-    h: 309,
-    expectedBase: '#300D57',
+    label: 'primary dark',
+    value: '#310D55',
+    expectedValue: { l: 13, c: 47, h: 309, a: 1 },
     expectedValues: [
       '#FCF7FF',
       '#F7EDFF',
@@ -56,31 +52,27 @@ const PALETTE = [
     ],
   },
   {
-    title: 'moss',
-    l: 69,
-    c: 45,
-    h: 181,
-    expectedBase: '#0DBDA8',
+    label: 'moss',
+    value: '#06BEA7',
+    expectedValue: { l: 69, c: 46, h: 180, a: 1 },
     expectedValues: [
       '#E6FFFA',
       '#B8FFF0',
-      '#66F7E0',
-      '#42DBC4',
-      '#0DBDA8',
-      '#00A18F',
-      '#008575',
+      '#63F7DE',
+      '#40DBC2',
+      '#00BFA6',
+      '#00A18C',
+      '#008573',
       '#00695C',
-      '#004F45',
+      '#004F42',
       '#00362E',
       '#001F1A',
     ],
   },
   {
-    title: 'grapefruit',
-    l: 86,
-    c: 21,
-    h: 21,
-    expectedBase: '#FFC9C9',
+    label: 'grapefruit',
+    value: '#FFCACA',
+    expectedValue: { l: 86, c: 21, h: 21, a: 1 },
     expectedValues: [
       '#FFF7F7',
       '#FFEDED',
@@ -96,11 +88,9 @@ const PALETTE = [
     ],
   },
   {
-    title: 'watermelon',
-    l: 65,
-    c: 65,
-    h: 28,
-    expectedBase: '#FF6E6B',
+    label: 'watermelon',
+    value: '#FF6A6A',
+    expectedValue: { l: 65, c: 65, h: 28, a: 1 },
     expectedValues: [
       '#FFF7F7',
       '#FFEDEB',
@@ -116,11 +106,9 @@ const PALETTE = [
     ],
   },
   {
-    title: 'lilac',
-    l: 80,
-    c: 35,
-    h: 299,
-    expectedBase: '#D1BDFF',
+    label: 'lilac',
+    value: '#CFBCFF',
+    expectedValue: { l: 80, c: 35, h: 299, a: 1 },
     expectedValues: [
       '#FAF7FF',
       '#F5EDFF',
@@ -136,11 +124,9 @@ const PALETTE = [
     ],
   },
   {
-    title: 'grape',
-    l: 31,
-    c: 103,
-    h: 307,
-    expectedBase: '#6108CF',
+    label: 'grape',
+    value: '#600DD0',
+    expectedValue: { l: 31, c: 103, h: 307, a: 1 },
     expectedValues: [
       '#FCF7FF',
       '#F7EDFF',
@@ -157,17 +143,22 @@ const PALETTE = [
   },
 ];
 
-describe('Convert LCH to hex', () => {
-  PALETTE.forEach((palette) => {
-    it(`should convert ${palette.title} base color to hex`, () => {
-      const result = lchToHex({ l: palette.l, c: palette.c, h: palette.h });
-      expect(result.value).toBe(palette.expectedBase);
+describe('Convert hex to LCH', () => {
+  BASE_COLORS.forEach((color) => {
+    it(`should convert ${color.label} to lch`, () => {
+      const result = hexToLch(color.value);
+      expect(result).toMatchObject(color.expectedValue);
     });
+  });
+});
 
+describe('Convert LCH to hex', () => {
+  BASE_COLORS.forEach((color) => {
     COLOR_SCALES.forEach((scale, i) => {
-      it(`should convert ${palette.title} ${scale.label} color to hex`, () => {
-        const result = lchToHex({ l: scale.value, c: palette.c, h: palette.h });
-        expect(result.value).toBe(palette.expectedValues[i]);
+      it(`should convert ${color.label} ${scale.label} color to hex`, () => {
+        const lch = hexToLch(color.value);
+        const result = lchToHex({ l: scale.value, c: lch.c, h: lch.h });
+        expect(result.value).toBe(color.expectedValues[i]);
       });
     });
   });
